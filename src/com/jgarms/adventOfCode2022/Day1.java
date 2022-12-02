@@ -16,6 +16,9 @@ public class Day1 {
 
     private static BufferedReader getInput() {
         InputStream input = Day1.class.getResourceAsStream("day1.txt");
+        if (input == null) {
+            throw new IllegalStateException("Could not open day1.txt");
+        }
         return new BufferedReader(new InputStreamReader(input));
     }
 
@@ -54,7 +57,7 @@ public class Day1 {
                 currentElfCalories += calories;
             }
         }
-        Collections.sort(elvesCalories, Collections.reverseOrder());
+        elvesCalories.sort(Collections.reverseOrder());
         int topThree = 0;
         for (int i=0; i<3; i++) {
             topThree += elvesCalories.get(i);
