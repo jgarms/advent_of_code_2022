@@ -13,42 +13,6 @@ public class Day2 {
         day2.part2();
     }
 
-    private static Outcome winLoseOrDraw(Shape mine, Shape theirs) {
-        if (mine == theirs) {
-            return Outcome.DRAW;
-        }
-        if (mine == Shape.ROCK) {
-            return theirs == Shape.SCISSORS ? Outcome.WIN : Outcome.LOSE;
-        } else if (mine == Shape.PAPER) {
-            return theirs == Shape.ROCK ? Outcome.WIN : Outcome.LOSE;
-        } else {
-            // SCISSORS
-            return theirs == Shape.PAPER ? Outcome.WIN : Outcome.LOSE;
-        }
-    }
-
-    private static Shape getShapeForOutcome(Shape theirs, Outcome outcome) {
-        if (outcome == Outcome.DRAW) {
-            return theirs;
-        } else if (outcome == Outcome.WIN) {
-            if (theirs == Shape.ROCK) {
-                return Shape.PAPER;
-            } else if (theirs == Shape.PAPER) {
-                return Shape.SCISSORS;
-            } else { // SCISSORS
-                return Shape.ROCK;
-            }
-        } else { // LOSE
-            if (theirs == Shape.ROCK) {
-                return Shape.SCISSORS;
-            } else if (theirs == Shape.PAPER) {
-                return Shape.ROCK;
-            } else { // SCISSORS
-                return Shape.PAPER;
-            }
-        }
-    }
-
     private void part1() throws Exception {
         BufferedReader input = Utils.getInput(this, "day2.txt");
         int totalScore = 0;
@@ -56,7 +20,7 @@ public class Day2 {
             String line = input.readLine();
             Shape theirs = Shape.fromChar(line.charAt(0));
             Shape mine = Shape.fromChar(line.charAt(2));
-            Outcome outcome = winLoseOrDraw(mine, theirs);
+            Outcome outcome = Outcome.winLoseOrDraw(mine, theirs);
             int score = outcome.points;
             score += mine.points;
             //System.out.println(line + ": " + score);
@@ -72,7 +36,7 @@ public class Day2 {
             String line = input.readLine();
             Shape theirs = Shape.fromChar(line.charAt(0));
             Outcome outcome = Outcome.fromChar(line.charAt(2));
-            Shape mine = getShapeForOutcome(theirs, outcome);
+            Shape mine = outcome.getShapeToPlay(theirs);
             int score = outcome.points;
             score += mine.points;
             //System.out.println(line + ": " + score);
@@ -82,12 +46,29 @@ public class Day2 {
     }
 
     private enum Outcome {
-        WIN(6), LOSE(0), DRAW(3);
+        WIN(6) {
+            @Override
+            Shape getShapeToPlay(Shape theirs) {
+                return theirs.getShapeToLoseAgainst();
+            }
+        }, LOSE(0) {
+            @Override
+            Shape getShapeToPlay(Shape theirs) {
+                return theirs.getShapeToWinAgainst();
+            }
+        }, DRAW(3) {
+            @Override
+            Shape getShapeToPlay(Shape theirs) {
+                return theirs;
+            }
+        };
         public final int points;
 
         Outcome(final int points) {
             this.points = points;
         }
+
+        abstract Shape getShapeToPlay(Shape theirs);
 
         static Outcome fromChar(final char c) {
             if (c == 'X') {
@@ -98,16 +79,64 @@ public class Day2 {
                 return Outcome.WIN;
             }
         }
+
+        private static Outcome winLoseOrDraw(Shape mine, Shape theirs) {
+            if (mine == theirs) {
+                return Outcome.DRAW;
+            }
+            if (mine == Shape.ROCK) {
+                return theirs == Shape.SCISSORS ? Outcome.WIN : Outcome.LOSE;
+            } else if (mine == Shape.PAPER) {
+                return theirs == Shape.ROCK ? Outcome.WIN : Outcome.LOSE;
+            } else {
+                // SCISSORS
+                return theirs == Shape.PAPER ? Outcome.WIN : Outcome.LOSE;
+            }
+        }
     }
 
     private enum Shape {
-        ROCK(1), PAPER(2), SCISSORS(3);
+        ROCK(1) {
+            @Override
+            Shape getShapeToWinAgainst() {
+                return SCISSORS;
+            }
+
+            @Override
+            Shape getShapeToLoseAgainst() {
+                return PAPER;
+            }
+        }, PAPER(2) {
+            @Override
+            Shape getShapeToWinAgainst() {
+                return ROCK;
+            }
+
+            @Override
+            Shape getShapeToLoseAgainst() {
+                return SCISSORS;
+            }
+        }, SCISSORS(3) {
+            @Override
+            Shape getShapeToWinAgainst() {
+                return PAPER;
+            }
+
+            @Override
+            Shape getShapeToLoseAgainst() {
+                return ROCK;
+            }
+        };
 
         public final int points;
 
         Shape(final int points) {
             this.points = points;
         }
+
+        abstract Shape getShapeToWinAgainst();
+
+        abstract Shape getShapeToLoseAgainst();
 
         static Shape fromChar(final char c) {
             switch (c) {
