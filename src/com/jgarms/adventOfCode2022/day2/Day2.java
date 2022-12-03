@@ -84,13 +84,10 @@ public class Day2 {
             if (mine == theirs) {
                 return Outcome.DRAW;
             }
-            if (mine == Shape.ROCK) {
-                return theirs == Shape.SCISSORS ? Outcome.WIN : Outcome.LOSE;
-            } else if (mine == Shape.PAPER) {
-                return theirs == Shape.ROCK ? Outcome.WIN : Outcome.LOSE;
+            if (mine == theirs.getShapeToLoseAgainst()) {
+                return Outcome.WIN;
             } else {
-                // SCISSORS
-                return theirs == Shape.PAPER ? Outcome.WIN : Outcome.LOSE;
+                return Outcome.LOSE;
             }
         }
     }
