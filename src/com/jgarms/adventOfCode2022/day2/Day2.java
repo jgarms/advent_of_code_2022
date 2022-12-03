@@ -1,4 +1,6 @@
-package com.jgarms.adventOfCode2022;
+package com.jgarms.adventOfCode2022.day2;
+
+import com.jgarms.adventOfCode2022.Utils;
 
 import java.io.BufferedReader;
 
@@ -6,8 +8,9 @@ import java.io.BufferedReader;
 public class Day2 {
 
     public static void main(String... args) throws Exception {
-        part1();
-        part2();
+        final Day2 day2 = new Day2();
+        day2.part1();
+        day2.part2();
     }
 
     private static Outcome winLoseOrDraw(Shape mine, Shape theirs) {
@@ -46,8 +49,8 @@ public class Day2 {
         }
     }
 
-    private static void part1() throws Exception {
-        BufferedReader input = Utils.getInput("day2.txt");
+    private void part1() throws Exception {
+        BufferedReader input = Utils.getInput(this, "day2.txt");
         int totalScore = 0;
         while (input.ready()) {
             String line = input.readLine();
@@ -62,8 +65,8 @@ public class Day2 {
         System.out.println("Part 1: " + totalScore);
     }
 
-    private static void part2() throws Exception {
-        BufferedReader input = Utils.getInput("day2.txt");
+    private void part2() throws Exception {
+        BufferedReader input = Utils.getInput(this, "day2.txt");
         int totalScore = 0;
         while (input.ready()) {
             String line = input.readLine();

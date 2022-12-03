@@ -1,4 +1,6 @@
-package com.jgarms.adventOfCode2022;
+package com.jgarms.adventOfCode2022.day1;
+
+import com.jgarms.adventOfCode2022.Utils;
 
 import java.io.BufferedReader;
 import java.util.ArrayList;
@@ -8,12 +10,13 @@ import java.util.List;
 public class Day1 {
 
     public static void main(String... args) throws Exception {
-        part1();
-        part2();
+        final Day1 day1 = new Day1();
+        day1.part1();
+        day1.part2();
     }
 
-    private static void part1() throws Exception {
-        BufferedReader reader = Utils.getInput("day2.txt");
+    private void part1() throws Exception {
+        BufferedReader reader = Utils.getInput(this, "day1.txt");
         int currentElfCalories = 0;
         int maxElfCalories = 0;
         while (reader.ready()) {
@@ -32,8 +35,8 @@ public class Day1 {
         System.out.println("Part 1: " + maxElfCalories);
     }
 
-    private static void part2() throws Exception {
-        BufferedReader reader = Utils.getInput("day1.txt");
+    private void part2() throws Exception {
+        BufferedReader reader = Utils.getInput(this, "day1.txt");
         String line;
         List<Integer> elvesCalories = new ArrayList<>();
         int currentElfCalories = 0;
