@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Utils {
@@ -16,8 +17,12 @@ public class Utils {
         return new BufferedReader(new InputStreamReader(input));
     }
 
+    public static Scanner getScanner(final Object source, final String filename) {
+        return new Scanner(Objects.requireNonNull(source.getClass().getResourceAsStream(filename)));
+    }
+
     public static List<String> getInputAsList(final Object source, final String filename) {
-        Scanner s = new Scanner(source.getClass().getResourceAsStream(filename));
+        Scanner s = getScanner(source, filename);
         List<String> list = new ArrayList<>();
         while (s.hasNext()) {
             list.add(s.nextLine());
