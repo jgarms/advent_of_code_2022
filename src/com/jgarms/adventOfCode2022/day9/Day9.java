@@ -11,17 +11,29 @@ public class Day9 {
     public static void main(String... args) {
         Day9 day9 = new Day9();
         day9.partOne();
+        day9.partTwo();
     }
 
     private void partOne() {
         Scanner s = Utils.getScanner(this, "day9.txt");
         List<Move> moves = parseMoves(s);
-        Rope rope = new Rope();
+        Rope rope = new Rope(2);
         for (Move move: moves) {
             rope.move(move);
         }
         int numVisited = rope.getNumVisitedSpaces();
         System.out.println("Part one: " + numVisited);
+    }
+
+    private void partTwo() {
+        Scanner s = Utils.getScanner(this, "day9.txt");
+        List<Move> moves = parseMoves(s);
+        Rope rope = new Rope(10);
+        for (Move move: moves) {
+            rope.move(move);
+        }
+        int numVisited = rope.getNumVisitedSpaces();
+        System.out.println("Part two: " + numVisited);
     }
 
     public static List<Move> parseMoves(Scanner s) {

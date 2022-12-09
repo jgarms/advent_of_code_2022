@@ -44,7 +44,7 @@ public class TestDay9 {
     public void testSample() {
         Scanner s = new Scanner(SAMPLE_INPUT);
         List<Move> moves = Day9.parseMoves(s);
-        Rope rope = new Rope();
+        Rope rope = new Rope(2);
         for (Move move: moves) {
             rope.move(move);
         }
