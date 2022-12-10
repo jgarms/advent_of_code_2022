@@ -21,6 +21,6 @@ public class Add extends Instruction {
 
     @Override
     public String toString() {
-        return "addx " + numToAdd + ". cyclesRemaining=" + cyclesRemaining;
+        return "addx " + numToAdd;
     }
 }

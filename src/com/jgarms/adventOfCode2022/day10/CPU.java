@@ -9,8 +9,10 @@ public class CPU {
     public int x = 1;
 
     public int cycle = 0;
+    public int crtPos = 0;
 
     public int signalStrengthSum = 0;
+    public StringBuilder crt = new StringBuilder();
 
     final Queue<Instruction> instructions = new LinkedList<>();
 
@@ -30,22 +32,38 @@ public class CPU {
 
     public void executeOneCycle() {
         cycle++;
-        if (isSignalStrengthCycle(cycle)) {
+        if (isSignalStrengthCycle()) {
             int signalStrength = cycle * x;
-            System.out.println("Start: Cycle=" + cycle + ". X=" + x + ". SS= " + signalStrength);
             signalStrengthSum += signalStrength;
         }
-        if (instructions.size() == 0) {
-            throw new IllegalStateException("Attempt to execute with an empty queue.");
-        }
+
+        handlePixel();
+
+        // execute
         Instruction instruction = instructions.peek();
+        if (instruction == null) {
+            throw new IllegalStateException("attempt to execute an empty instruction queue");
+        }
         boolean finished = instruction.execute(this);
         if (finished) {
             instructions.remove();
         }
     }
 
-    public static boolean isSignalStrengthCycle(int cycle) {
+    private void handlePixel() {
+        if (x-1 <= crtPos && crtPos <= x+1) {
+            crt.append("#");
+        } else {
+            crt.append(".");
+        }
+        crtPos++;
+        if (crtPos == 40) {
+            crt.append("\n");
+            crtPos = 0;
+        }
+    }
+
+    public boolean isSignalStrengthCycle() {
         if (cycle == 20) {
             return true;
         }
