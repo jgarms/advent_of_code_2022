@@ -32,11 +32,8 @@ public class CPU {
 
     public void executeOneCycle() {
         cycle++;
-        if (isSignalStrengthCycle()) {
-            int signalStrength = cycle * x;
-            signalStrengthSum += signalStrength;
-        }
-
+        
+        handleSignalStrength();
         handlePixel();
 
         // execute
@@ -47,6 +44,13 @@ public class CPU {
         boolean finished = instruction.execute(this);
         if (finished) {
             instructions.remove();
+        }
+    }
+
+    private void handleSignalStrength() {
+        if (isSignalStrengthCycle()) {
+            int signalStrength = cycle * x;
+            signalStrengthSum += signalStrength;
         }
     }
 
