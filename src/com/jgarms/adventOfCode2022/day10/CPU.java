@@ -32,7 +32,7 @@ public class CPU {
 
     public void executeOneCycle() {
         cycle++;
-        
+
         handleSignalStrength();
         handlePixel();
 
