@@ -18,7 +18,7 @@ public class MonkeyHandler {
     public void performTurn(Monkey monkey) {
         while (monkey.hasItems()) {
             Item item = monkey.popItemForInspection();
-            int newWorryLevel = monkey.operation.performOperation(item.worryLevel);
+            long newWorryLevel = monkey.operation.performOperation(item.worryLevel);
             newWorryLevel = newWorryLevel / 3;
 
 

@@ -2,14 +2,14 @@ package com.jgarms.adventOfCode2022.day11;
 
 public class Operation {
     final OperationType type;
-    final Integer amount;
+    final Long amount;
 
-    public Operation(OperationType type, Integer amount) {
+    public Operation(OperationType type, Long amount) {
         this.type = type;
         this.amount = amount;
     }
 
-    public int performOperation(int old) {
+    public long performOperation(long old) {
         return type.performOperation(old, amount);
     }
 
@@ -36,7 +36,7 @@ public class Operation {
             return new Operation(OperationType.SQUARE, null);
         }
         // ex: '  Operation: new = old * 19'
-        int amount = Integer.parseInt(operationString.substring(25));
+        long amount = Long.parseLong(operationString.substring(25));
         char operationChar = operationString.charAt(23); // "*"
         if ('*' == operationChar) {
             return new Operation(OperationType.MULTIPLY, amount);

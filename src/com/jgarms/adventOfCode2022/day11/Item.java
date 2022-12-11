@@ -2,9 +2,9 @@ package com.jgarms.adventOfCode2022.day11;
 
 public class Item {
 
-    int worryLevel;
+    long worryLevel;
 
-    public Item(int worryLevel) {
+    public Item(long worryLevel) {
         this.worryLevel = worryLevel;
     }
 }
