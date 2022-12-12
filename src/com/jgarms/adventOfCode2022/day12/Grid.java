@@ -58,6 +58,32 @@ public class Grid {
         }
     }
 
+    public void reset() {
+        for (int x=0; x<width; x++) {
+            for (int y=0; y<height; y++) {
+                nodes[x][y].reset();
+            }
+        }
+    }
+
+    public int getShortestDistanceFromElevation(int elevation) {
+        int shortestDistance = Integer.MAX_VALUE;
+        for (int x=0; x<width; x++) {
+            for (int y=0; y<height; y++) {
+                Node node = nodes[x][y];
+                if (node.elevation == elevation) {
+                    reset();
+                    calculateShortestPaths(node);
+                    int distanceToEnd = end.distanceFromStart;
+                    if (distanceToEnd < shortestDistance) {
+                        shortestDistance = distanceToEnd;
+                    }
+                }
+            }
+        }
+        return shortestDistance;
+    }
+
     private static Node getLowestDistanceNode(Set<Node> nodes) {
         Node lowestDistanceNode = null;
         int lowestDistance = Integer.MAX_VALUE;

@@ -22,6 +22,11 @@ public class Node implements Comparable<Node> {
         this.grid = grid;
     }
 
+    public void reset() {
+        this.distanceFromStart = Integer.MAX_VALUE;
+        shortestPathFromStart.clear();
+    }
+
     /**
      * Gets all accessible adjacent nodes. These will all be distance of 1.
      */

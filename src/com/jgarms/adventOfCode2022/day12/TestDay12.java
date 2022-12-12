@@ -55,6 +55,18 @@ public class TestDay12 {
         assertEquals(447, grid.end.distanceFromStart);
     }
 
+    @Test
+    public void testSimplePartTwo() {
+        Grid grid = new Grid(Utils.getStringAsList(SAMPLE_INPUT));
+        assertEquals(29, grid.getShortestDistanceFromElevation(0));
+    }
+
+    @Test
+    public void testPartTwo() {
+        Grid grid = new Grid(Utils.getInputAsList(this, "day12.txt"));
+        assertEquals(446, grid.getShortestDistanceFromElevation(0));
+    }
+
     public static final String SAMPLE_INPUT = """
             Sabqponm
             abcryxxl
