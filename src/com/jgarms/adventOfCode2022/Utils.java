@@ -29,4 +29,13 @@ public class Utils {
         }
         return list;
     }
+
+    public static List<String> getStringAsList(String input) {
+        Scanner s = new Scanner(input);
+        List<String> list = new ArrayList<>();
+        while (s.hasNext()) {
+            list.add(s.nextLine());
+        }
+        return list;
+    }
 }
