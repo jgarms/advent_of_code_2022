@@ -24,12 +24,12 @@ public class TestDay12 {
     public void testAdjacentNodes() {
         Grid grid = new Grid(Utils.getStringAsList(SAMPLE_INPUT));
         Node start = grid.start;
-        List<Node> adjacentNodes = start.getAdjacentNodes();
+        List<Node> adjacentNodes = start.getAdjacentNodes(false);
         assertEquals(2, adjacentNodes.size());
         Node end = grid.end;
-        assertEquals(4, end.getAdjacentNodes().size());
+        assertEquals(4, end.getAdjacentNodes(false).size());
         Node mid = grid.nodes[2][1];
-        assertEquals(3, mid.getAdjacentNodes().size());
+        assertEquals(3, mid.getAdjacentNodes(false).size());
     }
 
     @Test
@@ -44,14 +44,12 @@ public class TestDay12 {
     @Test
     public void testDijkstra() {
         Grid grid = new Grid(Utils.getStringAsList(SAMPLE_INPUT));
-        grid.calculateShortestPaths(grid.start);
         assertEquals(31, grid.end.distanceFromStart);
     }
 
     @Test
     public void testPartOne() {
         Grid grid = new Grid(Utils.getInputAsList(this, "day12.txt"));
-        grid.calculateShortestPaths(grid.start);
         assertEquals(447, grid.end.distanceFromStart);
     }
 

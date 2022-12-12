@@ -12,7 +12,6 @@ public class Day12 {
 
     public void partOne() {
         Grid grid = new Grid(Utils.getInputAsList(this, "day12.txt"));
-        grid.calculateShortestPaths(grid.start);
         System.out.println("Part one: " + grid.end.distanceFromStart);
     }
 

@@ -3,7 +3,6 @@ package com.jgarms.adventOfCode2022.day12;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ public class Node implements Comparable<Node> {
     public final Grid grid;
 
     int distanceFromStart = Integer.MAX_VALUE;
-    List<Node> shortestPathFromStart = new LinkedList<>();
+    int distanceFromEnd = Integer.MAX_VALUE;
 
     public Node(int x, int y, int elevation, Grid grid) {
         this.x = x;
@@ -22,26 +21,21 @@ public class Node implements Comparable<Node> {
         this.grid = grid;
     }
 
-    public void reset() {
-        this.distanceFromStart = Integer.MAX_VALUE;
-        shortestPathFromStart.clear();
-    }
-
     /**
      * Gets all accessible adjacent nodes. These will all be distance of 1.
      */
-    public List<Node> getAdjacentNodes() {
+    public List<Node> getAdjacentNodes(boolean reverse) {
         List<Node> nodes = new ArrayList<>();
 
-        addIfReachable(nodes, x-1, y);
-        addIfReachable(nodes,x+1, y);
-        addIfReachable(nodes, x, y-1);
-        addIfReachable(nodes, x, y+1);
+        addIfReachable(nodes, x-1, y, reverse);
+        addIfReachable(nodes,x+1, y, reverse);
+        addIfReachable(nodes, x, y-1, reverse);
+        addIfReachable(nodes, x, y+1, reverse);
 
         return nodes;
     }
 
-    private void addIfReachable(List<Node> nodes, int x, int y) {
+    private void addIfReachable(List<Node> nodes, int x, int y, boolean reverse) {
         // Don't add ourselves
         if (this.x == x && this.y == y) {
             throw new IllegalArgumentException("Attempt to add self to node list");
@@ -51,8 +45,14 @@ public class Node implements Comparable<Node> {
             return;
         }
         Node candidate = grid.nodes[x][y];
-        if (candidate.elevation <= elevation + 1) {
-            nodes.add(candidate);
+        if (reverse) {
+            if (candidate.elevation >= elevation - 1) {
+                nodes.add(candidate);
+            }
+        } else {
+            if (candidate.elevation <= elevation + 1) {
+                nodes.add(candidate);
+            }
         }
     }
 

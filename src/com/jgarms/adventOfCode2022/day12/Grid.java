@@ -31,38 +31,49 @@ public class Grid {
         if (end == null) {
             throw new IllegalArgumentException("No end node found");
         }
+        calculateShortestPaths();
     }
 
     /**
      * Dijkstra, baby
      */
-    public void calculateShortestPaths(Node startingNode) {
+    public void calculateShortestPaths() {
+        // from the start first
         Set<Node> settledNodes = new HashSet<>();
         Set<Node> unsettledNodes = new HashSet<>();
 
-        startingNode.distanceFromStart = 0;
-        unsettledNodes.add(startingNode);
+        start.distanceFromStart = 0;
+        unsettledNodes.add(start);
 
         while (unsettledNodes.size() > 0) {
-            Node currentNode = getLowestDistanceNode(unsettledNodes);
+            Node currentNode = getLowestDistanceNodeFromStart(unsettledNodes);
             unsettledNodes.remove(currentNode);
-            for (Node adjacentNode : currentNode.getAdjacentNodes()) {
+            for (Node adjacentNode : currentNode.getAdjacentNodes(false)) {
                 if (!settledNodes.contains(adjacentNode)) {
                     adjacentNode.distanceFromStart = currentNode.distanceFromStart + 1;
-                    adjacentNode.shortestPathFromStart = new LinkedList<>(currentNode.shortestPathFromStart);
-                    adjacentNode.shortestPathFromStart.add(currentNode);
                     unsettledNodes.add(adjacentNode);
                 }
             }
             settledNodes.add(currentNode);
         }
-    }
 
-    public void reset() {
-        for (int x=0; x<width; x++) {
-            for (int y=0; y<height; y++) {
-                nodes[x][y].reset();
+        // Now reverse it
+        settledNodes = new HashSet<>();
+        unsettledNodes = new HashSet<>();
+
+        end.distanceFromEnd = 0;
+        unsettledNodes.add(end);
+
+        while (unsettledNodes.size() > 0) {
+            Node currentNode = getLowestDistanceNodeFromEnd(unsettledNodes);
+            unsettledNodes.remove(currentNode);
+            for (Node adjacentNode : currentNode.getAdjacentNodes(true)) {
+                if (!settledNodes.contains(adjacentNode)) {
+                    adjacentNode.distanceFromEnd = currentNode.distanceFromEnd + 1;
+                    unsettledNodes.add(adjacentNode);
+                }
             }
+            settledNodes.add(currentNode);
         }
     }
 
@@ -72,11 +83,9 @@ public class Grid {
             for (int y=0; y<height; y++) {
                 Node node = nodes[x][y];
                 if (node.elevation == elevation) {
-                    reset();
-                    calculateShortestPaths(node);
-                    int distanceToEnd = end.distanceFromStart;
-                    if (distanceToEnd < shortestDistance) {
-                        shortestDistance = distanceToEnd;
+                    int distanceFromEnd = node.distanceFromEnd;
+                    if (distanceFromEnd < shortestDistance) {
+                        shortestDistance = distanceFromEnd;
                     }
                 }
             }
@@ -84,11 +93,24 @@ public class Grid {
         return shortestDistance;
     }
 
-    private static Node getLowestDistanceNode(Set<Node> nodes) {
+    private static Node getLowestDistanceNodeFromStart(Set<Node> nodes) {
         Node lowestDistanceNode = null;
         int lowestDistance = Integer.MAX_VALUE;
         for (Node node: nodes) {
             int nodeDistance = node.distanceFromStart;
+            if (nodeDistance < lowestDistance) {
+                lowestDistance = nodeDistance;
+                lowestDistanceNode = node;
+            }
+        }
+        return lowestDistanceNode;
+    }
+
+    private static Node getLowestDistanceNodeFromEnd(Set<Node> nodes) {
+        Node lowestDistanceNode = null;
+        int lowestDistance = Integer.MAX_VALUE;
+        for (Node node: nodes) {
+            int nodeDistance = node.distanceFromEnd;
             if (nodeDistance < lowestDistance) {
                 lowestDistance = nodeDistance;
                 lowestDistanceNode = node;
