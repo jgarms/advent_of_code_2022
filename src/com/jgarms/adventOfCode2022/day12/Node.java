@@ -80,6 +80,14 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(@NotNull Node o) {
-        return Integer.compare(distanceFromStart, o.distanceFromStart);
+        int distanceCompare = Integer.compare(distanceFromStart, o.distanceFromStart);
+        if (distanceCompare != 0) {
+            return distanceCompare;
+        }
+        int xCompare = Integer.compare(x, o.x);
+        if (xCompare != 0) {
+            return xCompare;
+        }
+        return Integer.compare(y, o.y);
     }
 }

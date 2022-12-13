@@ -40,16 +40,17 @@ public class Grid {
     public void calculateShortestPaths() {
         // from the start first
         Set<Node> settledNodes = new HashSet<>();
-        Set<Node> unsettledNodes = new HashSet<>();
+        NavigableSet<Node> unsettledNodes = new TreeSet<>();
 
         start.distanceFromStart = 0;
         unsettledNodes.add(start);
 
-        while (unsettledNodes.size() > 0) {
-            Node currentNode = getLowestDistanceNodeFromStart(unsettledNodes);
-            unsettledNodes.remove(currentNode);
+        while (!unsettledNodes.isEmpty()) {
+            Node currentNode = unsettledNodes.pollFirst();
+            assert currentNode != null;
             for (Node adjacentNode : currentNode.getAdjacentNodes(false)) {
                 if (!settledNodes.contains(adjacentNode)) {
+                    unsettledNodes.remove(adjacentNode);
                     adjacentNode.distanceFromStart = currentNode.distanceFromStart + 1;
                     unsettledNodes.add(adjacentNode);
                 }
@@ -58,17 +59,19 @@ public class Grid {
         }
 
         // Now reverse it
-        settledNodes = new HashSet<>();
-        unsettledNodes = new HashSet<>();
+        settledNodes.clear();
+        //noinspection ConstantValue
+        assert unsettledNodes.size() == 0;
 
         end.distanceFromEnd = 0;
         unsettledNodes.add(end);
 
-        while (unsettledNodes.size() > 0) {
-            Node currentNode = getLowestDistanceNodeFromEnd(unsettledNodes);
-            unsettledNodes.remove(currentNode);
+        while (!unsettledNodes.isEmpty()) {
+            Node currentNode = unsettledNodes.pollFirst();
+            assert currentNode != null;
             for (Node adjacentNode : currentNode.getAdjacentNodes(true)) {
                 if (!settledNodes.contains(adjacentNode)) {
+                    unsettledNodes.remove(adjacentNode);
                     adjacentNode.distanceFromEnd = currentNode.distanceFromEnd + 1;
                     unsettledNodes.add(adjacentNode);
                 }
@@ -91,32 +94,6 @@ public class Grid {
             }
         }
         return shortestDistance;
-    }
-
-    private static Node getLowestDistanceNodeFromStart(Set<Node> nodes) {
-        Node lowestDistanceNode = null;
-        int lowestDistance = Integer.MAX_VALUE;
-        for (Node node: nodes) {
-            int nodeDistance = node.distanceFromStart;
-            if (nodeDistance < lowestDistance) {
-                lowestDistance = nodeDistance;
-                lowestDistanceNode = node;
-            }
-        }
-        return lowestDistanceNode;
-    }
-
-    private static Node getLowestDistanceNodeFromEnd(Set<Node> nodes) {
-        Node lowestDistanceNode = null;
-        int lowestDistance = Integer.MAX_VALUE;
-        for (Node node: nodes) {
-            int nodeDistance = node.distanceFromEnd;
-            if (nodeDistance < lowestDistance) {
-                lowestDistance = nodeDistance;
-                lowestDistanceNode = node;
-            }
-        }
-        return lowestDistanceNode;
     }
 
     static int getElevation(char c) {
