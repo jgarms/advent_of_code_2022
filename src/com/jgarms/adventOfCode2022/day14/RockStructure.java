@@ -1,9 +1,6 @@
 package com.jgarms.adventOfCode2022.day14;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
@@ -21,6 +18,10 @@ public class RockStructure {
             int y = Integer.parseInt(pointPairArray[1]);
             vertices.add(new Point(x, y));
         }
+    }
+
+    public RockStructure(Collection<Point> vertices) {
+        this.vertices.addAll(vertices);
     }
 
     public Set<Point> getAllPoints() {

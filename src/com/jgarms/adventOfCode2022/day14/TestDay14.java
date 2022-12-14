@@ -57,6 +57,31 @@ public class TestDay14 {
         assertEquals(655, numUnits);
     }
 
+    @Test
+    public void testAddBottom() {
+        Cave cave = new Cave(new Scanner(SAMPLE_INPUT));
+        assertEquals(9, cave.maxY);
+        cave.addBottom();
+        assertEquals(11, cave.maxY);
+        assertEquals(Content.ROCK, cave.contents.get(new Point(500, 11)));
+        int numUnits = 0;
+        while (cave.addSand()) {
+            numUnits++;
+        }
+        assertEquals(93, numUnits, cave.toString());
+    }
+
+    @Test
+    public void testPartTwo() {
+        Cave cave = new Cave(Utils.getScanner(this, "day14.txt"));
+        cave.addBottom();
+        int numUnits = 0;
+        while (cave.addSand()) {
+            numUnits++;
+        }
+        assertEquals(26484, numUnits);
+    }
+
     public static final String SAMPLE_INPUT = """
             498,4 -> 498,6 -> 496,6
             503,4 -> 502,4 -> 502,9 -> 494,9""";
