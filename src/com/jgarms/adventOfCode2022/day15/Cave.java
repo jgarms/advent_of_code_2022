@@ -60,4 +60,33 @@ public class Cave {
         }
         return num;
     }
+
+    public Point getUndetectedPoint(int minX, int minY, int maxX, int maxY) {
+        for (int i=0; i<sensors.size(); i++) {
+            Sensor sensor = sensors.get(i);
+            Set<Point> perimeter = sensor.getPerimeter();
+            for (Point point: perimeter) {
+                if (point.x() < minX || point.x() > maxX || point.y() < minY || point.y() > maxY) {
+                    // Outside area
+                    continue;
+                }
+                boolean found = false;
+                for (int j=0; j<sensors.size(); j++) {
+                    if (i == j) {
+                        // No need to check the sensor from which this perimeter came
+                        continue;
+                    }
+                    if (sensors.get(j).getContentAtPoint(point) != null) {
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found) {
+                    // Not in any other sensor
+                    return point;
+                }
+            }
+        }
+        throw new IllegalStateException("No undetected point found");
+    }
 }

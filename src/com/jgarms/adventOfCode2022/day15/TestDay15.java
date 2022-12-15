@@ -4,8 +4,10 @@ import com.jgarms.adventOfCode2022.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Scanner;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TestDay15 {
 
@@ -17,7 +19,7 @@ public class TestDay15 {
     }
 
     @Test
-    public void testSampleInput() {
+    public void testSampleInputPartOne() {
         Sensor sensor = new Sensor("Sensor at x=13, y=2: closest beacon is at x=15, y=3");
         assertEquals(new Point(13, 2), sensor.location);
         assertEquals(new Point(15, 3), sensor.beaconLocation);
@@ -34,6 +36,30 @@ public class TestDay15 {
         Cave cave = new Cave(Utils.getScanner(this, "day15.txt"));
         assertEquals(5299855, cave.getNumForbiddenBeaconPositions(2000000));
     }
+
+    @Test
+    public void testPerimeter() {
+        Sensor sensor = new Sensor("Sensor at x=13, y=2: closest beacon is at x=15, y=3");
+        Set<Point> perimeter = sensor.getPerimeter();
+        assertEquals(16, perimeter.size());
+        assertTrue(perimeter.contains(new Point(13, -2)));
+        assertTrue(perimeter.contains(new Point(12, -1)));
+    }
+
+    @Test
+    public void testSampleInputPartTwo() {
+        Cave cave = new Cave(new Scanner(SAMPLE_INPUT));
+        Point point = cave.getUndetectedPoint(0, 0, 14, 11);
+        assertEquals(new Point(14, 11), point);
+        assertEquals(56000011, Day15.computeFrequency(point));
+    }
+
+    @Test
+    public void testPartTwo() {
+        Cave cave = new Cave(Utils.getScanner(this, "day15.txt"));
+        assertEquals(13615843289729L, Day15.computeFrequency(cave.getUndetectedPoint(0, 0, 4000000, 4000000)));
+    }
+
 
     public static final String SAMPLE_INPUT = """
             Sensor at x=2, y=18: closest beacon is at x=-2, y=15
