@@ -1,9 +1,9 @@
 package com.jgarms.adventOfCode2022.day15;
 
+import com.jgarms.adventOfCode2022.Utils;
 import org.junit.jupiter.api.Test;
 
 import java.util.Scanner;
-import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -17,16 +17,7 @@ public class TestDay15 {
     }
 
     @Test
-    public void testCoveredPoints() {
-        Point s = new Point(2, 18);
-        Point b = new Point(-2, 15);
-        Sensor sensor = new Sensor(s, b);
-        Set<Point> points = sensor.getAllCoveredPoints();
-        assertEquals(113, points.size());
-    }
-
-    @Test
-    public void testParsing() {
+    public void testSampleInput() {
         Sensor sensor = new Sensor("Sensor at x=13, y=2: closest beacon is at x=15, y=3");
         assertEquals(new Point(13, 2), sensor.location);
         assertEquals(new Point(15, 3), sensor.beaconLocation);
@@ -36,6 +27,12 @@ public class TestDay15 {
 
         Cave cave = new Cave(new Scanner(SAMPLE_INPUT));
         assertEquals(26, cave.getNumForbiddenBeaconPositions(10));
+    }
+
+    @Test
+    public void testPartOne() {
+        Cave cave = new Cave(Utils.getScanner(this, "day15.txt"));
+        assertEquals(5299855, cave.getNumForbiddenBeaconPositions(2000000));
     }
 
     public static final String SAMPLE_INPUT = """

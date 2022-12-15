@@ -3,7 +3,7 @@ package com.jgarms.adventOfCode2022.day15;
 import java.util.*;
 
 public class Cave {
-    final Map<Point, Content> contents = new HashMap<>();
+    List<Sensor> sensors = new ArrayList<>();
 
     int minX = Integer.MAX_VALUE;
     int maxX = 0;
@@ -17,67 +17,47 @@ public class Cave {
     }
 
     public void addSensor(Sensor sensor) {
-        System.out.println("Adding sensor with manhattan distance of " + sensor.radius  + "...");
-        contents.put(sensor.location, Content.SENSOR);
-        contents.put(sensor.beaconLocation, Content.BEACON);
-        for (Point point: sensor.getAllCoveredPoints()) {
-            updateMinMaxes(point);
-            if (!contents.containsKey(point)) {
-                contents.put(point, Content.SIGNAL);
-            }
-        }
-        System.out.println("Done adding sensor.");
+        sensors.add(sensor);
+        updateMinMaxes(sensor);
     }
 
-    private void updateMinMaxes(Point point) {
-        int x = point.x();
-        int y = point.y();
-        if (x < minX) {
-            minX = x;
+    private void updateMinMaxes(Sensor sensor) {
+        int sensorMinX = sensor.getMinX();
+        if (sensorMinX < minX) {
+            minX = sensorMinX;
         }
-        if (x > maxX) {
-            maxX = x;
+        int sensorMaxX = sensor.getMaxX();
+        if (sensorMaxX > maxX) {
+            maxX = sensorMaxX;
         }
-        if (y < minY) {
-            minY = y;
+        int sensorMinY = sensor.getMinY();
+        if (sensorMinY < minY) {
+            minY = sensorMinY;
         }
-        if (y > maxY) {
-            maxY = y;
+        int sensorMaxY = sensor.getMaxY();
+        if (sensorMaxY > maxY) {
+            maxY = sensorMaxY;
         }
     }
 
     public int getNumForbiddenBeaconPositions(int y) {
         int num = 0;
         for (int x=minX; x<=maxX; x++) {
-            Content c = contents.get(new Point(x, y));
-            if (c == Content.SENSOR || c == Content.SIGNAL) {
+            boolean signalFound = false;
+            for (Sensor sensor: sensors) {
+                Content c = sensor.getContentAtPoint(new Point(x, y));
+                if (c == Content.BEACON) {
+                    signalFound = false;
+                    break;
+                }
+                if (c == Content.SIGNAL) {
+                    signalFound = true;
+                }
+            }
+            if (signalFound) {
                 num++;
             }
         }
         return num;
-    }
-
-    @Override
-    public String toString() {
-        StringBuilder sb = new StringBuilder();
-        for (int y=minY; y<=maxY; y++) {
-            sb.append(getStringForNum(y)).append(": ");
-            for (int x = minX; x<=maxX; x++) {
-                Content c = contents.get(new Point(x, y));
-                if (c == null) {
-                    sb.append('.');
-                } else {
-                    sb.append(c.c);
-                }
-            }
-            sb.append("\n");
-        }
-        return sb.toString();
-    }
-
-    private String getStringForNum(int num) {
-        int biggestNum = Math.max(maxX, maxY);
-        int numDigits = Integer.toString(biggestNum).length();
-        return String.format("%1$" + numDigits + "s", num);
     }
 }

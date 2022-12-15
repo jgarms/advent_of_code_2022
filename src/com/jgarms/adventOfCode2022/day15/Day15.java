@@ -10,9 +10,7 @@ public class Day15 {
     }
 
     private void partOne() {
-        System.out.println("Creating cave...");
         Cave cave = new Cave(Utils.getScanner(this, "day15.txt"));
-        System.out.println("Cave created.");
         System.out.println("Part one: " + cave.getNumForbiddenBeaconPositions(2000000));
     }
 }
