@@ -1,7 +1,5 @@
 package com.jgarms.adventOfCode2022.day12;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -79,7 +77,7 @@ public class Node implements Comparable<Node> {
     }
 
     @Override
-    public int compareTo(@NotNull Node o) {
+    public int compareTo(Node o) {
         int distanceCompare = Integer.compare(distanceFromStart, o.distanceFromStart);
         if (distanceCompare != 0) {
             return distanceCompare;

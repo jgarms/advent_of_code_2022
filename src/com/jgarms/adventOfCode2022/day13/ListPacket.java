@@ -1,7 +1,5 @@
 package com.jgarms.adventOfCode2022.day13;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -99,7 +97,7 @@ public class ListPacket extends PacketData implements Comparable<ListPacket> {
     }
 
     @Override
-    public int compareTo(@NotNull ListPacket o) {
+    public int compareTo(ListPacket o) {
         return compare(this, o);
     }
 }
