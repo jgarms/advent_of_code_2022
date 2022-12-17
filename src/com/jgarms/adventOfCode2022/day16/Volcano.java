@@ -65,7 +65,6 @@ public class Volcano {
                 if (timeRemaining > distance) {
                     List<String> openValvesCopy = new ArrayList<>(openValves);
                     openValvesCopy.add(valveName);
-                    //found = true;
                     calculateOpenOrderings(valveName, openValvesCopy, timeRemaining - distance - 1, allOrderings);
                 }
             }
@@ -73,7 +72,7 @@ public class Volcano {
         allOrderings.add(openValves);
     }
 
-    public int getTotalPressureReleased(List<String> openOrdering, int time) {
+    public int getPressureReleased(List<String> openOrdering, int time) {
         int sum = 0;
         String pos = "AA";
         for (String valveName: openOrdering) {
@@ -88,10 +87,10 @@ public class Volcano {
 
     public int getMaxPressureReleased(int time) {
         List<List<String>> orderings = new ArrayList<>();
-        calculateOpenOrderings("AA", new ArrayList<>(), 30, orderings);
+        calculateOpenOrderings("AA", new ArrayList<>(), time, orderings);
         int max = 0;
         for (List<String> ordering: orderings) {
-            int pressure = getTotalPressureReleased(ordering, time);
+            int pressure = getPressureReleased(ordering, time);
             if (pressure > max) {
                 max = pressure;
             }
@@ -107,4 +106,41 @@ public class Volcano {
         }
         return sb.toString();
     }
+
+    record OrderingAndScore(List<String> ordering, int score) {
+        public boolean overlaps(OrderingAndScore o) {
+            for (String order:ordering()) {
+                if (o.ordering().contains(order)) {
+                    return true;
+                }
+            }
+            return false;
+        }
+    }
+
+    public int getMaxPressureReleasedWithElephant(int time) {
+        List<List<String>> orderings = new ArrayList<>();
+        calculateOpenOrderings("AA", new ArrayList<>(), time, orderings);
+
+        // score all the orderings
+        List<OrderingAndScore> scores = new ArrayList<>();
+        for (List<String> ordering: orderings) {
+            int score= getPressureReleased(ordering, time);
+            scores.add(new OrderingAndScore(ordering, score));
+        }
+
+        int maxScore = 0;
+        for (int humanIndex = 0; humanIndex<scores.size(); humanIndex++) {
+            OrderingAndScore humanScore = scores.get(humanIndex);
+            for (int elephantIndex = humanIndex + 1; elephantIndex <scores.size(); elephantIndex++) {
+                OrderingAndScore elephantScore = scores.get(elephantIndex);
+                int combinedScore = humanScore.score() + elephantScore.score();
+                if (combinedScore > maxScore && !humanScore.overlaps(elephantScore)) {
+                    maxScore = combinedScore;
+                }
+            }
+        }
+        return maxScore;
+    }
+
 }

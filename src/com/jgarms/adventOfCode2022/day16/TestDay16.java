@@ -44,6 +44,18 @@ public class TestDay16 {
         assertEquals(1789, volcano.getMaxPressureReleased(30));
     }
 
+    @Test
+    public void testPartTwoSample() {
+        Volcano volcano = new Volcano(new Scanner(SAMPLE_INPUT));
+        assertEquals(1707, volcano.getMaxPressureReleasedWithElephant(26));
+    }
+
+    @Test
+    public void testPartTwo() {
+        Volcano volcano = new Volcano(Utils.getScanner(this, "day16.txt"));
+        assertEquals(2496, volcano.getMaxPressureReleasedWithElephant(26));
+    }
+
     public static final String SAMPLE_INPUT = """
             Valve AA has flow rate=0; tunnels lead to valves DD, II, BB
             Valve BB has flow rate=13; tunnels lead to valves CC, AA
