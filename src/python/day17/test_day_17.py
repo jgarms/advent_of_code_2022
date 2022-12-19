@@ -8,7 +8,7 @@ class MyTestCase(unittest.TestCase):
         chamber = day17.Chamber(jet_pattern)
         while chamber.num_rocks_landed < 2022:
             chamber.tick()
-        self.assertEqual(3068, chamber.num_rocks_landed)
+        self.assertEqual(3068, chamber.height)
 
 
 if __name__ == '__main__':
