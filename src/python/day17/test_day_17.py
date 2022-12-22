@@ -5,9 +5,8 @@ import day17
 class Day17TestCases(unittest.TestCase):
     def test_part_one_sample(self):
         jet_pattern = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>"
-        chamber = day17.Chamber(jet_pattern)
-        while chamber.num_rocks_landed < 2022:
-            chamber.tick()
+        chamber = day17.Chamber(jet_pattern, 2022)
+        chamber.run()
         self.assertEqual(3068, chamber.height)
 
 

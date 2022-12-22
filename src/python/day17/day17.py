@@ -45,10 +45,14 @@ class Chamber:
 
     jet_index = 0
     shape_index = 0
+    total_rocks_to_fall: int
 
-    def __init__(self, jet_pattern_string):
-        self.jet_pattern = jet_pattern_string \
+    previous_states = {}
+    found_cycle = False
 
+    def __init__(self, jet_pattern_string, total_rocks_to_fall):
+        self.jet_pattern = jet_pattern_string
+        self.total_rocks_to_fall = total_rocks_to_fall
 
     def tick(self):
         # Do we need a new rock?
@@ -84,6 +88,24 @@ class Chamber:
         else:
             self.rock_pos_y -= 1
 
+        if self.height > 30 and self.current_rock is None and not self.found_cycle:
+            cache_key_list = [self.shape_index, self.jet_index]
+            for x in range(self.width):
+                for y in range(0, 30):
+                    test_point = Point(x, self.height - y)
+                    if test_point in self.contents:
+                        cache_key_list.append(Point(x, y))
+            cache_key = tuple(cache_key_list)
+            if cache_key in self.previous_states:
+                print("found")
+                self.found_cycle = True
+                (height_per_cycle, num_rocks_per_cycle) = self.previous_states[cache_key]
+                print("height_per_cycle: ", height_per_cycle)
+                print("num_rocks_per_cycle: ", num_rocks_per_cycle)
+            else:
+                # print("not found")
+                self.previous_states[cache_key] = tuple([self.height, self.num_rocks_landed])
+
         # increment our indices
         if self.current_rock is None:
             self.shape_index += 1
@@ -93,6 +115,10 @@ class Chamber:
         self.jet_index += 1
         if self.jet_index >= len(self.jet_pattern):
             self.jet_index = 0
+
+    def run(self):
+        while self.num_rocks_landed < self.total_rocks_to_fall:
+            self.tick()
 
     def print_state(self, potential_points):
         for y in range(self.height + 6, -1, -1):
@@ -110,7 +136,6 @@ class Chamber:
 
 if __name__ == '__main__':
     jetstream = stdin.read()
-    chamber = Chamber(jetstream)
-    while chamber.num_rocks_landed < 2022:
-        chamber.tick()
+    chamber = Chamber(jetstream, 2022)
+    chamber.run()
     print(chamber.height)
