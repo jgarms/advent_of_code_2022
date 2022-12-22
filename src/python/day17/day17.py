@@ -1,4 +1,3 @@
-from itertools import cycle
 from sys import stdin
 from typing import NamedTuple
 
@@ -44,23 +43,23 @@ class Chamber:
 
     current_rock = None
 
-    jet_pattern: cycle
-
-    shapes: cycle
+    jet_index = 0
+    shape_index = 0
 
     def __init__(self, jet_pattern_string):
-        self.jet_pattern = cycle(jet_pattern_string)
-        self.shapes = cycle(ALL_SHAPES)
+        self.jet_pattern = jet_pattern_string \
+
 
     def tick(self):
         # Do we need a new rock?
         if self.current_rock is None:
-            self.current_rock = next(self.shapes)
+            self.current_rock = ALL_SHAPES[self.shape_index]
             self.rock_pos_x = 2
             self.rock_pos_y = self.height + 3
 
+        jet = self.jet_pattern[self.jet_index]
         # Move right or left
-        if next(self.jet_pattern) == "<":
+        if jet == "<":
             if self.rock_pos_x > 0:
                 potential_points = self.current_rock.get_points_for_origin(self.rock_pos_x - 1, self.rock_pos_y)
                 if potential_points.isdisjoint(self.contents):
@@ -84,6 +83,16 @@ class Chamber:
             self.num_rocks_landed += 1
         else:
             self.rock_pos_y -= 1
+
+        # increment our indices
+        if self.current_rock is None:
+            self.shape_index += 1
+            if self.shape_index >= len(ALL_SHAPES):
+                self.shape_index = 0
+
+        self.jet_index += 1
+        if self.jet_index >= len(self.jet_pattern):
+            self.jet_index = 0
 
     def print_state(self, potential_points):
         for y in range(self.height + 6, -1, -1):

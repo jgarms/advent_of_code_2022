@@ -2,7 +2,7 @@ import unittest
 import day17
 
 
-class MyTestCase(unittest.TestCase):
+class Day17TestCases(unittest.TestCase):
     def test_part_one_sample(self):
         jet_pattern = ">>><<><>><<<>><>>><<<>>><<<><<<>><>><<>>"
         chamber = day17.Chamber(jet_pattern)
