@@ -49,6 +49,7 @@ class Chamber:
 
     previous_states = {}
     found_cycle = False
+    cycle_height_increase = 0
 
     def __init__(self, jet_pattern_string, total_rocks_to_fall):
         self.jet_pattern = jet_pattern_string
@@ -97,11 +98,14 @@ class Chamber:
                         cache_key_list.append(Point(x, y))
             cache_key = tuple(cache_key_list)
             if cache_key in self.previous_states:
-                print("found")
                 self.found_cycle = True
-                (height_per_cycle, num_rocks_per_cycle) = self.previous_states[cache_key]
-                print("height_per_cycle: ", height_per_cycle)
-                print("num_rocks_per_cycle: ", num_rocks_per_cycle)
+                (previous_height, previous_rocks_landed) = self.previous_states[cache_key]
+                height_per_cycle = self.height - previous_height
+                rocks_per_cycle = self.num_rocks_landed - previous_rocks_landed
+                rocks_remaining = self.total_rocks_to_fall - self.num_rocks_landed
+                cycles_remaining = rocks_remaining // rocks_per_cycle
+                self.cycle_height_increase = cycles_remaining * height_per_cycle
+                self.num_rocks_landed += cycles_remaining * rocks_per_cycle
             else:
                 # print("not found")
                 self.previous_states[cache_key] = tuple([self.height, self.num_rocks_landed])
@@ -115,6 +119,9 @@ class Chamber:
         self.jet_index += 1
         if self.jet_index >= len(self.jet_pattern):
             self.jet_index = 0
+
+    def get_height(self):
+        return self.height + self.cycle_height_increase
 
     def run(self):
         while self.num_rocks_landed < self.total_rocks_to_fall:
@@ -136,6 +143,9 @@ class Chamber:
 
 if __name__ == '__main__':
     jetstream = stdin.read()
-    chamber = Chamber(jetstream, 2022)
+    # chamber = Chamber(jetstream, 2022)
+    # chamber.run()
+    # print("Part one: ", chamber.get_height())
+    chamber = Chamber(jetstream, 1000000000000)
     chamber.run()
-    print(chamber.height)
+    print("Part two: ", chamber.get_height())
