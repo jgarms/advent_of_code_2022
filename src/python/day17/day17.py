@@ -35,25 +35,25 @@ ALL_SHAPES = [HORIZONTAL_LINE, PLUS, CORNER, VERTICAL_LINE, BLOCK]
 
 class Chamber:
     width = 7
-    height = 0
-    rock_pos_x = 0
-    rock_pos_y = 0
-    contents = set()
-    num_rocks_landed = 0
-
-    current_rock = None
-
-    jet_index = 0
-    shape_index = 0
-    total_rocks_to_fall: int
-
-    previous_states = {}
-    found_cycle = False
-    cycle_height_increase = 0
 
     def __init__(self, jet_pattern_string, total_rocks_to_fall):
+        self.height = 0
         self.jet_pattern = jet_pattern_string
         self.total_rocks_to_fall = total_rocks_to_fall
+        self.rock_pos_x = 0
+        self.rock_pos_y = 0
+        self.contents = set()
+        self.num_rocks_landed = 0
+
+        self.current_rock = None
+
+        self.jet_index = 0
+        self.shape_index = 0
+        self.total_rocks_to_fall: int
+
+        self.previous_states = {}
+        self.found_cycle = False
+        self.cycle_height_increase = 0
 
     def tick(self):
         # Do we need a new rock?
@@ -107,7 +107,6 @@ class Chamber:
                 self.cycle_height_increase = cycles_remaining * height_per_cycle
                 self.num_rocks_landed += cycles_remaining * rocks_per_cycle
             else:
-                # print("not found")
                 self.previous_states[cache_key] = tuple([self.height, self.num_rocks_landed])
 
         # increment our indices
@@ -143,9 +142,9 @@ class Chamber:
 
 if __name__ == '__main__':
     jetstream = stdin.read()
-    # chamber = Chamber(jetstream, 2022)
-    # chamber.run()
-    # print("Part one: ", chamber.get_height())
+    chamber = Chamber(jetstream, 2022)
+    chamber.run()
+    print("Part one: ", chamber.get_height())
     chamber = Chamber(jetstream, 1000000000000)
     chamber.run()
     print("Part two: ", chamber.get_height())
