@@ -25,6 +25,14 @@ public class TestDay18 {
         assertEquals(4604, cube.getSurfaceArea());
     }
 
+    @Test
+    public void testExposedSurfaceArea() {
+        Cube cube = new Cube(new Scanner(SAMPLE_INPUT));
+        assertEquals(58, cube.getExposedSurfaceArea());
+        cube = new Cube(Utils.getScanner(this, "day18.txt"));
+        assertEquals(2604, cube.getExposedSurfaceArea());
+    }
+
     public static final String SAMPLE_INPUT = """
             2,2,2
             1,2,2
