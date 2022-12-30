@@ -49,6 +49,25 @@ public class TestDay19 {
         System.out.println("took " + total + "ms");
     }
 
+    @Test
+    public void testPartTwoSample() {
+        Blueprint blueprint = new Blueprint("Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.");
+        State startingState = new State(blueprint, 32);
+        System.out.println("Calculating Blueprint 1...");
+        long start = System.currentTimeMillis();
+        assertEquals(56, startingState.getMaxGeodes());
+        long total = System.currentTimeMillis() - start;
+        System.out.println("took " + total + "ms");
+
+        blueprint = new Blueprint("Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.");
+        startingState = new State(blueprint, 32);
+        System.out.println("Calculating Blueprint 2...");
+        start = System.currentTimeMillis();
+        assertEquals(62, startingState.getMaxGeodes());
+        total = System.currentTimeMillis() - start;
+        System.out.println("took " + total + "ms");
+    }
+
     public static final String SAMPLE_INPUT = """
             Blueprint 1: Each ore robot costs 4 ore. Each clay robot costs 2 ore. Each obsidian robot costs 3 ore and 14 clay. Each geode robot costs 2 ore and 7 obsidian.
             Blueprint 2: Each ore robot costs 2 ore. Each clay robot costs 3 ore. Each obsidian robot costs 3 ore and 8 clay. Each geode robot costs 3 ore and 12 obsidian.""";
