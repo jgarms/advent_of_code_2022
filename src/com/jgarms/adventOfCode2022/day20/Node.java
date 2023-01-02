@@ -3,9 +3,9 @@ package com.jgarms.adventOfCode2022.day20;
 public class Node {
     Node left;
     Node right;
-    final int value;
+    long value;
 
-    public Node(int value) {
+    public Node(long value) {
         this.value = value;
     }
 }

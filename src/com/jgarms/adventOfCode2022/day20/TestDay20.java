@@ -34,7 +34,17 @@ public class TestDay20 {
 
         data = new Data(Utils.getScanner(this, "day20.txt"));
         data.mix();
-        System.out.println(data.getGroveCoordinates());
+        assertEquals(8302, data.getGroveCoordinates());
+    }
+
+    @Test
+    public void testPartTwo() {
+        Data data = new Data(new Scanner(SAMPLE_INPUT));
+        data.applyDecryptionKey();
+        for (int i=0; i<10; i++) {
+            data.mix();
+        }
+        assertEquals(1623178306L, data.getGroveCoordinates());
     }
 
     public static final String SAMPLE_INPUT = """

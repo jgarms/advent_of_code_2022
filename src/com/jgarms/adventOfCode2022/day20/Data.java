@@ -3,6 +3,8 @@ package com.jgarms.adventOfCode2022.day20;
 import java.util.Scanner;
 
 public class Data {
+
+    private static final long DECRYPTION_KEY = 811589153L;
     Node[] originalNodes;
     Node head;
     Node zeroNode;
@@ -13,7 +15,7 @@ public class Data {
         Node previous = head;
         int numNodes = 1;
         while (scanner.hasNext()) {
-            int value = scanner.nextInt();
+            long value = scanner.nextLong();
             Node node = new Node(value);
             if (value == 0) {
                 zeroNode = node;
@@ -36,11 +38,17 @@ public class Data {
         }
     }
 
+    void applyDecryptionKey() {
+        for (Node node: originalNodes) {
+            node.value = node.value * DECRYPTION_KEY;
+        }
+    }
+
     void mix(Node node) {
         if (node.value == 0) {
             return;
         }
-        int distance = node.value;
+        long distance = node.value % (size - 1);
 
         // Remove the node first
         if (node == head) {
@@ -76,8 +84,8 @@ public class Data {
         }
     }
 
-    public int getGroveCoordinates() {
-        int sum = 0;
+    public long getGroveCoordinates() {
+        long sum = 0;
         Node current = zeroNode;
         for (int i=0; i<3; i++) {
             for (int j=0; j<1000; j++) {
