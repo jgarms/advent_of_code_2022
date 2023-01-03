@@ -13,4 +13,8 @@ public class MonkeyTree {
             monkeys.put(monkey.name, monkey);
         }
     }
+
+    public long getRootValue() {
+        return monkeys.get("root").getValue(this);
+    }
 }

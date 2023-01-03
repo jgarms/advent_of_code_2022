@@ -31,11 +31,11 @@ public class TestDay21 {
     @Test
     public void testGetValues() {
         MonkeyTree tree = new MonkeyTree(new Scanner(SAMPLE_INPUT));
-        long value = tree.monkeys.get("root").getValue(tree);
+        long value = tree.getRootValue();
         assertEquals(152, value);
 
         tree = new MonkeyTree(Utils.getScanner(this, "day21.txt"));
-        value = tree.monkeys.get("root").getValue(tree);
+        value = tree.getRootValue();
         assertEquals(22382838633806L, value);
     }
 
