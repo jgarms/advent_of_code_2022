@@ -22,26 +22,34 @@ public class MonkeyTree {
         Monkey root = monkeys.get("root");
         root.operator = Operator.EQUALS;
         Monkey human = monkeys.get("humn");
-        human.value = 0L;
-        if (root.getValue(this) == 0) {
-            return 0;
-        }
-        long left = Long.MIN_VALUE;
-        long right = Long.MAX_VALUE;
-        while (left < right) {
-            long candidate = (left + right) / 2;
+        long min = Long.MIN_VALUE;
+        long max = Long.MAX_VALUE;
+        while (min < max) {
+            long candidate = (min + max) / 2;
             human.value = candidate;
             long result = root.getValue(this);
             if (result == 0) {
                 return candidate;
             }
             if (result > 0) {
-                left = candidate + 1;
+                min = candidate + 1;
             } else {
-                right = candidate - 1;
+                max = candidate - 1;
             }
         }
 
-        return 0L;
+        // Hm, binary search failed. Try normal iteration.
+        for (long candidate=1; candidate<Long.MAX_VALUE; candidate++) {
+            human.value = candidate;
+            if (root.getValue(this) == 0L) {
+                return candidate;
+            }
+            human.value = candidate * -1L;
+            if (root.getValue(this) == 0L) {
+                return candidate;
+            }
+        }
+
+        throw new IllegalStateException("Could not find a solution");
     }
 }
