@@ -22,6 +22,11 @@ public enum Operator {
         long perform(long a, long b) {
             return a / b;
         }
+    }, EQUALS('=') {
+        @Override
+        long perform(long a, long b) {
+            return Long.compare(a, b);
+        }
     };
 
     final char opcode;

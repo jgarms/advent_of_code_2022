@@ -8,7 +8,7 @@ public class Monkey {
     @Nullable
     Long value;
     @Nullable
-    final Operator operator;
+    Operator operator;
     @Nullable
     final String a, b;
 
@@ -32,7 +32,7 @@ public class Monkey {
             Monkey monkeyA = tree.monkeys.get(a);
             Monkey monkeyB = tree.monkeys.get(b);
             assert operator != null;
-            value = operator.perform(monkeyA.getValue(tree), monkeyB.getValue(tree));
+            return operator.perform(monkeyA.getValue(tree), monkeyB.getValue(tree));
         }
         return value;
     }

@@ -39,6 +39,17 @@ public class TestDay21 {
         assertEquals(22382838633806L, value);
     }
 
+    @Test
+    public void testSearchForRootEquality() {
+        MonkeyTree tree = new MonkeyTree(new Scanner(SAMPLE_INPUT));
+        long value = tree.searchForRootEquality();
+        assertEquals(301, value);
+
+        tree = new MonkeyTree(Utils.getScanner(this, "day21.txt"));
+        value = tree.searchForRootEquality();
+        assertEquals(3099532691300L, value);
+    }
+
     public static final String SAMPLE_INPUT = """
             root: pppw + sjmn
             dbpl: 5

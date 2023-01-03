@@ -18,7 +18,7 @@ public class Day21 {
 
     private void partTwo() {
         MonkeyTree tree = new MonkeyTree(Utils.getScanner(this, "day21.txt"));
-
-        System.out.println("Part two: " + tree);
+        long value = tree.searchForRootEquality();
+        System.out.println("Part two: " + value);
     }
 }
