@@ -136,19 +136,12 @@ public class Day2 {
         abstract Shape getShapeToLoseAgainst();
 
         static Shape fromChar(final char c) {
-            switch (c) {
-                case 'A':
-                case 'X':
-                    return ROCK;
-                case 'B':
-                case 'Y':
-                    return PAPER;
-                case 'C':
-                case 'Z':
-                    return SCISSORS;
-                default:
-                    throw new IllegalArgumentException("Unknown shape char: " + c);
-            }
+            return switch (c) {
+                case 'A', 'X' -> ROCK;
+                case 'B', 'Y' -> PAPER;
+                case 'C', 'Z' -> SCISSORS;
+                default -> throw new IllegalArgumentException("Unknown shape char: " + c);
+            };
         }
     }
 }
